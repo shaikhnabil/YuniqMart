@@ -9,16 +9,17 @@
 
             <div class="mb-3 row">
                 <div class="col-4">
-                    <a href="{{ asset('storage/templates/create_products_excel_template.xlsx') }}" download class="btn btn-dark">
+                    <a href="{{ asset('storage/templates/create_products_excel_template.xlsx') }}" download
+                        class="btn btn-dark">
                         <i class="bi bi-arrow-down-circle"> products Template</i>
                     </a>
                 </div>
                 <div class="col-4">
-                    <input type="file" class="form-control d-none @error('bulkFile') is-invalid @enderror" id="bulkFile"
-                        wire:model="bulkFile" wire:change='importProducts'>
-                        <label for="bulkFile" class="btn btn-dark">
-                            <i class="bi bi-cloud-upload"> Choose File</i>
-                        </label>
+                    <input type="file" class="form-control d-none @error('bulkFile') is-invalid @enderror"
+                        id="bulkFile" wire:model="bulkFile" wire:change='importProducts'>
+                    <label for="bulkFile" class="btn btn-dark">
+                        <i class="bi bi-cloud-upload"> Choose File</i>
+                    </label>
                     @error('bulkFile')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -49,6 +50,9 @@
                             <label for="images" id="incoming" class="form-label">Images</label>
                             <input class="form-control @error('images.*') is-invalid @enderror" type="file"
                                 wire:model='images' id="images" name="images" multiple>
+                            <div wire:loading.class="mt-2 progress progress-bar-animated d-block w-100"
+                                wire:target="images" class="w-0 progress-bar progress-bar-striped" role="progressbar"
+                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" hidden></div>
                         </div>
                         @error('images.*')
                             <p class="text-danger">{{ $message }}</p>
@@ -87,14 +91,7 @@
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
 
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description *</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
-                                wire:model='description' rows="3"></textarea>
-                        </div>
-                        @error('description')
-                            <p class="text-danger">{{ $message }}</p>
-                        @enderror
+
                     </div>
 
 
@@ -133,7 +130,7 @@
 
                         <div class="mb-3">
                             <label for="subcategories" class="form-label">Subcategories</label>
-                            <select class="form-select @error('subcategory_ids') is-invalid @enderror"
+                            <select class="form-select py-3 @error('subcategory_ids') is-invalid @enderror"
                                 id="subcategories" wire:model='subcategory_ids' name="subcategory_ids[]" multiple>
                             </select>
                             @error('subcategory_ids')
@@ -141,6 +138,19 @@
                             @enderror
                         </div>
                     </div>
+
+                    {{-- wire:model='description' --}}
+                    <div wire:ignore>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description *</label>
+                            {{-- <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
+                                wire:ignore rows="3"></textarea> --}}
+                                <livewire:trix :value="$description" />
+                        </div>
+                    </div>
+                    @error('description')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
 
                     {{-- <div class="mb-3">
                     <label for="subcategories" class="form-label">Subcategories (Populated based on category)</label>
@@ -160,6 +170,7 @@
         </div>
     </div>
 </div>
+
 
 @push('script')
     <script>
@@ -197,4 +208,78 @@
             });
         });
     </script>
+
+    {{-- tinymce editor for description --}}
+    @assets
+        <script src="https://cdn.tiny.cloud/1/cjkgz106gkus34ry1bgmdm15ke6to6dl8u4zvqxnzxuj89ev/tinymce/7/tinymce.min.js"
+            referrerpolicy="origin"></script>
+    @endassets
+
+    @script
+        <script>
+            tinymce.init({
+                selector: '#description',
+                height: 300,
+                menubar: false,
+                //forced_root_block: false,
+                setup: function(editor) {
+                    editor.on('init change', function() {
+                        editor.save();
+                    });
+                    editor.on('change', function(e) {
+                        @this.set('{{ $description }}', editor.getContent());
+                    });
+                }
+                plugins: [
+                    // Core editing features
+                    'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists',
+                    'media',
+                    'searchreplace', 'table', 'visualblocks', 'wordcount',
+                    // Your account includes a free trial of TinyMCE premium features
+                    // Try the most popular premium features until Dec 1, 2024:
+                    'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed',
+                    'a11ychecker',
+                    'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage',
+                    'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes',
+                    'mergetags',
+                    'autocorrect', 'typography', 'inlinecss', 'markdown',
+                    // Early access to document converters
+                    'importword', 'exportword', 'exportpdf',
+                ],
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                tinycomments_mode: 'embedded',
+                tinycomments_author: 'Author name',
+                mergetags_list: [{
+                        value: 'First.Name',
+                        title: 'First Name'
+                    },
+                    {
+                        value: 'Email',
+                        title: 'Email'
+                    },
+                ],
+                ai_request: (request, respondWith) => respondWith.string(() => Promise.reject(
+                    'See docs to implement AI Assistant')),
+                exportpdf_converter_options: {
+                    'format': 'Letter',
+                    'margin_top': '1in',
+                    'margin_right': '1in',
+                    'margin_bottom': '1in',
+                    'margin_left': '1in'
+                },
+                exportword_converter_options: {
+                    'document': {
+                        'size': 'Letter'
+                    }
+                },
+                importword_converter_options: {
+                    'formatting': {
+                        'styles': 'inline',
+                        'resets': 'inline',
+                        'defaults': 'inline',
+                    }
+                },
+            });
+        </script>
+    @endscript
 @endpush
