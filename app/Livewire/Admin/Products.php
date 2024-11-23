@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Livewire\Trix;
 use App\Models\Categories;
 use App\Models\Subcategories;
 use App\Models\User;
@@ -38,6 +39,15 @@ class Products extends Component
 
     use WithFileUploads;
 
+    public $listeners = [
+        Trix::EVENT_VALUE_UPDATED // trix_value_updated()
+    ];
+
+    public function trix_value_updated($value){
+        $this->description = $value;
+    }
+
+
     public function mount($product_id = null)
     {
         $this->categories = Categories::all();
@@ -46,7 +56,8 @@ class Products extends Component
             $this->product_id = $this->product->id;
             $this->name = $this->product->name;
             $this->price = $this->product->price;
-            $this->description = $this->product->description;
+            //$this->description = $this->product->description;
+            $this->description = strip_tags($this->product->description);
             $this->color = $this->product->color;
             $this->size = $this->product->size;
             $this->brand = $this->product->brand;
@@ -174,7 +185,7 @@ class Products extends Component
         $product = \App\Models\Products::findOrFail($this->product_id);
 
         $this->validate([
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:255',
             'images' => 'required|array|min:1',
             'images.*' => 'required|mimes:jpg,jpeg,png,webp|max:2048',
             'price' => 'required|numeric',

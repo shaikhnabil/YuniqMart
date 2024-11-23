@@ -24,6 +24,8 @@
                             <label for="images" class="form-label">Images</label>
                             <input class="form-control @error('images') is-invalid @enderror" type="file"
                                 id="images" name="images" wire:model='images' multiple>
+                                <div wire:loading.class="mt-2 progress progress-bar-animated d-block w-100" wire:target="images" class="w-0 progress-bar progress-bar-striped"
+                                role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" hidden></div>
                             @if ($product->image)
                                 @php
                                     $images = json_decode($product->image);
