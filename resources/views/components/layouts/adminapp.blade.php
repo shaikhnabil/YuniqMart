@@ -77,7 +77,7 @@
                 <div class="flex-wrap d-flex align-items-center justify-content-center justify-content-lg-start">
                     <a href="{{ route('admin.dashboard') }}"
                         class="mb-2 d-flex align-items-center mb-lg-0 text-light me-3 text-decoration-none">
-                        <h3 class="text-warning">*******</h3>
+                        <h3 class="text-warning">YuniqMart</h3>
                     </a>
                     <div class="ms-auto d-flex justify-content-lg-end">
                         <a href="{{ route('admin.login') }}" type="button" wire:navigate
@@ -90,9 +90,9 @@
         </header>
         @yield('auth')
     @endguest
-    @auth()
+    @auth('admin')
         <header class="p-0 shadow navbar navbar-dark sticky-top bg-dark flex-md-nowrap">
-            <a class="px-3 navbar-brand bg-dark col-md-3 col-lg-2 me-0 text-warning" href="#">*******</a>
+            <a class="px-3 navbar-brand bg-dark col-md-3 col-lg-2 me-0 text-warning" href="#">YuniqMart</a>
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
                 aria-label="Toggle navigation">
