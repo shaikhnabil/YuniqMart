@@ -18,7 +18,7 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <a href="/" wire:navigate class="navbar-brand text-warning">
-                    <h3>*******</h3>
+                    <h3 class="fw-bold">YuniqMart</h3>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
