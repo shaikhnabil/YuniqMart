@@ -4,10 +4,79 @@
     @endpush
     @section('css')
         <style>
-            .quantity-input {
+            /* .quantity-input {
                 width: 80px !important;
                 text-align: center;
+            } */
+
+            .cart .row {
+                gap: 10px;
             }
+
+            @media (max-width: 768px) {
+    /* Stack buttons vertically on small screens */
+    .cart .col-12,
+    .cart .col-md-6 {
+        width: 100%;
+    }
+}
+
+
+            @media (min-width: 768px) {
+             /* Constrain the overall card height */
+             .cd {
+                max-height: 90vh;
+                display: flex;
+                flex-direction: row;
+            }
+
+            /* Product image container */
+            .images {
+                position: sticky;
+                top: 0;
+                height: 90vh;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #main-image {
+                max-width: 100%;
+                height: auto;
+                object-fit: contain;
+            }
+
+            .thumbnail img {
+                margin: 5px;
+                cursor: pointer;
+                border: 2px solid transparent;
+                transition: border-color 0.3s ease;
+            }
+
+            .thumbnail img:hover {
+                border-color: #007bff;
+            }
+
+            /* Scrollable product details */
+            .product {
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 15px;
+            }
+
+            /* Hide scrollbar for product details */
+            .product::-webkit-scrollbar {
+                width: 0;
+                display: none;
+            }
+
+            .product {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        }
         </style>
     @endsection
 
@@ -15,10 +84,10 @@
         <x-alert :msg="session('success')"></x-alert>
     @endif
 
-    <div class="container mt-3 mb-3">
+    <div class="container-fluid my-2">
         <div class="row d-flex justify-content-center">
             <div class="col-12 col-md-10 col-lg-12">
-                <div class="card">
+                <div class="card cd">
                     <div class="row g-0">
                         <!-- Product Images Section -->
                         @php
@@ -42,7 +111,7 @@
                         </div>
     
                         <!-- Product Details Section -->
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 product">
                             <div class="p-4 product">
                                 <div class="mt-2 mb-3">
                                     <span class="text-uppercase text-muted brand">{{ $product->brand ?? '' }}</span>
@@ -58,7 +127,7 @@
                                     </div>
                                 </div>
     
-                                <p class="about">{{ $product->description }}</p>
+                                <p class="about">{!! $product->description !!}</p>
     
                                 <!-- Color Selection -->
                                 @if (!empty($product->color))

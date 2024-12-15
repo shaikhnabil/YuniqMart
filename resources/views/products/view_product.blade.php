@@ -33,7 +33,7 @@
             <hr>
             <div class="card-body">
                 <h3 class="card-title mb-4">{{ $product->name }}</h3>
-                <p class="card-text mb-0"><span class="fw-bold">Description: </span> {{ $product->description }}</p>
+                <p class="card-text mb-0"><span class="fw-bold">Description: </span> {!! $product->description !!}</p>
                 <p class="card-text mb-0"><span class="fw-bold">Price: </span>₹{{ number_format($product->price, 2) }}</p>
                 <p class="card-text mb-0"><span class="fw-bold">Category: </span>{{ $product->category->name ?? 'None' }}</p>
                 <p class="card-text"><span class="fw-bold">Sub Categories: </span>
