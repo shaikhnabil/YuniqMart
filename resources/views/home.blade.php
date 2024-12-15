@@ -84,7 +84,8 @@
                     <div class="card-body" style="text-align: justify;">
                         <h5 class="card-title">{{ $product->name }}</h5>
                         <p class="my-0 card-text"><span class="fw-bold">Description: </span>
-                            {{ Str::words($product->description, 12, '...') }}</p>
+                            {{ Str::words(strip_tags($product->description), 12, '...') }}</p>
+                            {{-- {{ Str::words($product->description, 12, '...') }}</p> --}}
                         <p class="my-0 card-text"><span class="fw-bold">Price: </span>
                             <td>₹{{ number_format($product->price, 2) }}</td>
                         </p>
