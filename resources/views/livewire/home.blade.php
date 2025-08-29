@@ -117,7 +117,7 @@
                                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                         <img src="{{ asset('storage/' . $image) }}" class="p2 img-fluid"
                                             alt="Product Image"
-                                            style="object-fit: contain; 100%">
+                                            style="object-fit: contain;">
                                     </div>
                                 @endforeach
                             </div>
